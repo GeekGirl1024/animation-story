@@ -1,0 +1,23 @@
+{
+  "name": "animation-story",
+  "description": "",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geekgirl1024/animation-story.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geekgirl1024/animation-story/issues"
+  },
+  "homepage": "https://github.com/geekgirl1024/animation-story#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
