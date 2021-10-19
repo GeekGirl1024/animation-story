@@ -29,8 +29,16 @@ class AnimationMovements {
     let a = top/(mid**2);
     
     // top = -a * 200 * (200)
-    
-   
+
+    /*
+    console.log("absolute " + absoluteT);
+    console.log("delta " + deltaT);
+
+    console.log(animationObject);
+    if (absoluteT != deltaT) {
+      //exit;
+    }
+    */
 
     
     let deltat = absoluteT % root2;

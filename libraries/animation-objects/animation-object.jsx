@@ -63,6 +63,8 @@ class AnimationObject {
         this.position.y = newMovementObject.startPosition.y;
         if (newMovementObject.start) {
           this.t = newMovementObject.start;
+        } else {
+          this.t = 0;
         }
       } else if(this.currentRangeObject && this.currentRangeObject.endPosition) {
         // if new rangeObject's startPosition is not defined, and the previous rangeObject's 
@@ -85,10 +87,17 @@ class AnimationObject {
     }
     
     if (updateFunction) {
-      updateFunction(t, t - this.t);
+      //console.log(this);
+      updateFunction(t - this.currentMovementObject.min, t - this.t);
+      //console.log("Absolute T: " + t);
+      //console.log("this.t: "+this.t);
     }
+
+    //if (this.start != null) {
+      this.t = t;
+    //}
     
-    this.t = t;
+    
   }
   
   /**

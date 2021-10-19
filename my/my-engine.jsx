@@ -24,7 +24,7 @@ class MyEngine extends Engine {
   CreateDot1() {
     let dot = new Dot(0, 0, 4, "#FFFF00", "#000000");
     
-    dot.AddUpdateFunction(new MovementObject(null, 5000, null, null, function(absoluteT, deltaT) { AnimationMovements.Nothing(dot, absoluteT, deltaT)}));
+    dot.AddUpdateFunction(new MovementObject(0, 5000, null, null, function(absoluteT, deltaT) { AnimationMovements.Nothing(dot, absoluteT, deltaT)}));
     
     dot.AddUpdateFunction(new MovementObject(5001, null, null, null, function (absoluteT, deltaT) {
       if (!this.totalDelta) {
@@ -51,7 +51,7 @@ class MyEngine extends Engine {
       this.position.x += -150 + 150* t/5000.0;
     }.bind(dot));
     */
-    dot.AddUpdateFunction(new MovementObject(null, null, null, null, function(absoluteT, deltaT) { AnimationMovements.HappyBounce2(dot, absoluteT, deltaT)}));
+    dot.AddUpdateFunction(new MovementObject(0, null, null, null, function(absoluteT, deltaT) { AnimationMovements.HappyBounce2(dot, absoluteT, deltaT)}));
     
     /*
     dot.AddUpdateFunction(10001, null, null, null, function (t) {
@@ -79,7 +79,7 @@ class MyEngine extends Engine {
       this.position.x += -150 + 150* t/5000.0;
     }.bind(dot));
     */
-    dot.AddUpdateFunction(new MovementObject(null, null, null, null, function(absoluteT, deltaT) { AnimationMovements.HappyBounce2(dot, absoluteT, deltaT)}));
+    dot.AddUpdateFunction(new MovementObject(0, null, null, null, function(absoluteT, deltaT) { AnimationMovements.HappyBounce2(dot, absoluteT, deltaT)}));
     
     /*
     dot.AddUpdateFunction(10001, null, null, null, function (t) {
