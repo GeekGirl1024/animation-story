@@ -28,14 +28,10 @@ class AnimationObject {
   
   /**
    * Creates new MovementObjects and pushes onto the RangeArray updates
-   * @param {number} start - start time for this update function. (null indicates beginning of time)
-   * @param {number} end - end time for this update function. (null indicates end of time)
-   * @param {point} startPosition - Initial position for this update function. (null indicates no specified initial position)
-   * @param {point} endPosition - End position for this update function. (null indicates no specified end position)
-   * @param {function} updateFunction - actual function that updates the state of the object
+   * @param {MovementObject} movementObject - movement object to add to updates
    */
-  AddUpdateFunction(start, end, startPosition, endPosition, updateFunction){
-    this.updates.Push(new MovementObject(start, end, startPosition, endPosition, updateFunction));
+  AddUpdateFunction(movementObject){
+    this.updates.Push(movementObject);
   }
   
   /**
@@ -84,8 +80,8 @@ class AnimationObject {
       this.currentMovementObject = newMovementObject;
     }
     
-    if (this.currentMovementObject) {
-      updateFunction = this.currentMovementObject.data;
+    if (this.currentMovementObject && this.currentMovementObject.movementMeta) {
+      updateFunction = this.currentMovementObject.movementMeta.updateFunction;
     }
     
     if (updateFunction) {

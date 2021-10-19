@@ -11,11 +11,11 @@ class MovementObject extends RangeObject {
    * @param {function} updateFunction - actual function that updates the state of the object
    */
   constructor(min, max, startPosition, endPosition, updateFunction) {
-    super(min, max, startPosition, endPosition, updateFunction);
+    super(min, max);
     this.startPosition = startPosition;
     this.endPosition = endPosition;
     this.t = 0;
-    this.movementMeta = null;
+    this.movementMeta = { testing:"yes", updateFunction: updateFunction };
   }
 }
 

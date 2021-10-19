@@ -3,7 +3,7 @@ class AnimationMovements {
   /**
    * Animatoin Movement function for HappyBounce
    * @param {AnimationObject} animationObject - The Animation Object
-   * @param (number) absoluteT - total time since the start of this action
+   * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */
   static HappyBounce(animationObject, absoluteT, deltaT) {
@@ -16,7 +16,7 @@ class AnimationMovements {
   /**
    * Animatoin Movement function for HappyBounce2
    * @param {AnimationObject} animationObject - The Animation Object
-   * @param (number) absoluteT - total time since the start of this action
+   * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */ 
   static HappyBounce2(animationObject, absoluteT, deltaT) {
@@ -30,16 +30,10 @@ class AnimationMovements {
     
     // top = -a * 200 * (200)
     
-    
-
-    if (!animationObject.totalDelta) {
-      animationObject.totalDelta = 0;
-    }
    
+
     
-    animationObject.totalDelta += deltaT;
-    
-    let deltat = animationObject.totalDelta % root2;
+    let deltat = absoluteT % root2;
     
 
     let height = -(a) * deltat * (deltat - root2);
@@ -51,11 +45,21 @@ class AnimationMovements {
   /**
    * Animatoin Movement function for Nothing
    * @param {AnimationObject} animationObject - The Animation Object
-   * @param (number) absoluteT - total time since the start of this action
+   * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */
 
   static Nothing(animationObject, absoluteT, deltaT) {
+  }
+
+  /**
+   * Animatoin Movement function for Nothing
+   * @param {AnimationObject} animationObject - The Animation Object
+   * @param {number} absoluteT - total time since the start of this action
+   * @param {number} deltaT - total time since the last call of this action
+   */
+
+  static MoveLeft(animationObject, absoluteT, deltaT) {
   }
   
 }

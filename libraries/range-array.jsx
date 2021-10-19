@@ -14,21 +14,6 @@ class RangeArray {
   }
   
   /**
-   * calls GetRangeObject and returns the data
-   * @param {number} t - time
-   * @return {any} - data stored in RangeObject corresponding to t
-   */
-  GetData(t) {
-    let rangeObject = this.GetRangeObject(t);
-    
-    if (rangeObject) {
-      return rangeObject.data;
-    }
-    
-    return null;
-  }
-  
-  /**
    * Gets RangeObject corresponding to the time t
    * @param {number} t - time
    * @return {RangeObject} - RangeObject corresponding to t
@@ -49,6 +34,7 @@ class RangeArray {
       
       // If the currentObject contains the time t, set the current index and return the currentObject
       if (currentObject && currentObject.Contains(t)) {
+
         this.current = index;
         return currentObject;
       }
