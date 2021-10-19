@@ -66,8 +66,8 @@ class AnimationMovements {
    * @param {number} deltaT - total time since the last call of this action
    */
 
-  static Left(absoluteT, deltaT, movementMeta) {
-    this.position.x -= deltaT * 0.03;
+  static HorizontalMove(absoluteT, deltaT, movementMeta) {
+    this.position.x += deltaT * movementMeta.speed;
   }
   
 }

@@ -16,6 +16,44 @@ class MyEngine extends Engine {
     this.CreateDot2();
     this.CreateDot3();
     this.CreateRectangle1();
+
+    this.CreateBounceLine();
+  }
+
+  /**
+   * Creates Bounceing dots
+   */
+  CreateBounceLine() {
+      let bouncePeriod = 1000.0;
+      let mid = (bouncePeriod)/2.0;
+      let bounceHeight = 200.0;
+      
+      let acceleration = -bounceHeight/(mid**2);
+      
+    
+    for (let i = 0; i < 40; i++) {
+      let dot = new Dot(-100 + i * 5, -230, 4, "#FFAAAA", "#000000");
+
+      // Do nothing the first i sec
+      let dotMovement = new MovementObject(0, i*100, null, null, 
+        AnimationMovements.Nothing.bind(dot)
+      );
+      dot.AddUpdateFunction(dotMovement);
+
+      dotMovement = new MovementObject(i*100 + 1, null, null, null, 
+        AnimationMovements.HappyBounce2.bind(dot)
+      );
+
+      dotMovement.movementMeta.bouncePeriod = bouncePeriod;
+      dotMovement.movementMeta.acceleration = acceleration;
+
+      dot.AddUpdateFunction(dotMovement);
+      
+      dot.SortUpdates();
+      
+      this.animationObjects.push(dot);
+    }
+    
   }
   
   /**
@@ -24,19 +62,19 @@ class MyEngine extends Engine {
   CreateDot1() {
     let dot = new Dot(0, 0, 4, "#FFFF00", "#000000");
     
+    // Do nothing the first 5 sec
     let dotMovement = new MovementObject(0, 5000, null, null, 
       AnimationMovements.Nothing.bind(dot)
     );
-
     dot.AddUpdateFunction(dotMovement);
 
-    
-    dot.AddUpdateFunction(new MovementObject(5001, null, null, null,
-      AnimationMovements.HorizontalSine.bind(dot))
+    // Horizontal osilation in sine pattern
+    dotMovement = new MovementObject(5001, null, null, null,
+      AnimationMovements.HorizontalSine.bind(dot)
     );
+    dot.AddUpdateFunction(dotMovement);
     
     dot.SortUpdates();
-    
     
     this.animationObjects.push(dot);
   }
@@ -47,19 +85,21 @@ class MyEngine extends Engine {
   CreateDot2() {
     let dot = new Dot(100, 20, 4, "#0000FF", "#000000");
 
-
+    // move -0.03/tick horizontally for 5 sec
     let dotMovement = new MovementObject(null, 5000, null, null, 
-        AnimationMovements.Left.bind(dot)
+        AnimationMovements.HorizontalMove.bind(dot)
       );
-
+    dotMovement.movementMeta.speed = -0.03;
     dot.AddUpdateFunction(dotMovement);
 
+    // pause for 3 seconds
     dotMovement = new MovementObject(5001, 8000, null, null, 
-        AnimationMovements.Nothing.bind(dot)
-      );
+      AnimationMovements.Nothing.bind(dot)
+    );
 
     dot.AddUpdateFunction(dotMovement);
     
+    // Bounce every 300 ticks up to 30 high
     dotMovement = new MovementObject(8001, null, null, null, 
         AnimationMovements.HappyBounce2.bind(dot)
       );
@@ -83,16 +123,12 @@ class MyEngine extends Engine {
    * Creates Dot 3
    */
   CreateDot3() {
-    let dot = new Dot(30, 30, 4, "#00FF00", "#000000");
-    /*
-    dot.AddUpdateFunction(null, 1, null, null, function (t) {
-      this.position.x += -150 + 150* t/5000.0;
-    }.bind(dot));
-    */
+    let dot = new Dot(30, 100, 4, "#00FF00", "#000000");
+
+    // bounce every 600 ticks to a hight of 60.
     let dotMovement = new MovementObject(0, null, null, null, 
-      
-        AnimationMovements.HappyBounce2.bind(dot)
-        );
+      AnimationMovements.HappyBounce2.bind(dot)
+    );
 
     let bouncePeriod = 600.0;
     let mid = (bouncePeriod)/2.0;
@@ -114,8 +150,13 @@ class MyEngine extends Engine {
    */
   CreateRectangle1() {
     let rectangle = new Rectangle(0, 0, 10, 20, "#FF0000", "#000000");
+
+    // move up and down
+    let movementObject = new MovementObject(null, null, null, null,
+      AnimationMovements.UpAndDown.bind(rectangle)
+    );
     
-    rectangle.AddUpdateFunction(new MovementObject(null, null, null, null, AnimationMovements.UpAndDown.bind(rectangle)));
+    rectangle.AddUpdateFunction(movementObject);
     
     rectangle.SortUpdates();
     
