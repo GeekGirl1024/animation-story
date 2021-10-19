@@ -22,7 +22,8 @@ class AnimationObject {
     // updates contains a RangeArray full of update functions
     this.updates = new RangeArray();
     this.currentMovementObject = null;
-    this.t = 0;
+    this.movementStartTime = 0;
+    this.movementUpdateDeltaTime = 0
 
   }
   
@@ -51,35 +52,52 @@ class AnimationObject {
 
     if (this.currentMovementObject && this.currentMovementObject.Contains(t)) {
       // if we already have the right movement object
-     
     } else {
       // if we need to get the next movement object
 
       // Get new MovementObject
       let newMovementObject = this.updates.GetRangeObject(t);
-      if (newMovementObject && newMovementObject.startPosition) {
-        // if new rangeObject's startPosition is defined, use that.
-        this.position.x = newMovementObject.startPosition.x;
-        this.position.y = newMovementObject.startPosition.y;
-        if (newMovementObject.start) {
-          this.t = newMovementObject.start;
+      if (newMovementObject) {
+        if (newMovementObject.startPosition) {
+          // if new rangeObject's startPosition is defined, reset from startPosition
+          this.position.x = newMovementObject.startPosition.x;
+          this.position.y = newMovementObject.startPosition.y;
+        } else if (newMovementObject.rangeStart) {
+          this.movementStartTime = newMovementObject.rangeStart;
         } else {
-          this.t = 0;
+          // this should be at the begining of all movements
+          this.movementStartTime = 0;
         }
-      } else if(this.currentRangeObject && this.currentRangeObject.endPosition) {
-        // if new rangeObject's startPosition is not defined, and the previous rangeObject's 
-        this.position.x = this.currentMovementObject.endPosition.x;
-        this.position.y = this.currentMovementObject.endPosition.y;
-        if (this.currentMovementObject.end) {
-          this.t = this.currentMovementObject.end;
+
+        this.currentMovementObject = newMovementObject;
+
+        // At this point ready to calculate movement update.
+
+        
+
+      } else if(this.currentRangeObject) {
+        if (this.currentRangeObject.endPosition) {
+          // if new rangeObject's startPosition is not defined, and the previous rangeObject's 
+          this.position.x = this.currentMovementObject.endPosition.x;
+          this.position.y = this.currentMovementObject.endPosition.y;
+        } else if (this.currentMovementObject.rangeEnd) {
+          // calculated the startPosition from the previous rangeObject's end time
+          this.currentMovementObject.updateFunction(
+            this.currentMovementObject.rangeEnd - this.currentMovementObject.rangeStart, 
+            this.currentMovementObject.rangeEnd - this.currentMovementObject.rangeStart - this.movementUpdateDeltaTime,
+            this.currentMovementObject.movementMeta);
+        } else {
+          // should never get here
         }
-      } else if(this.currentMovementObject && this.currentMovementObject.end) {
-        // calculate the last position from previous movement object
-        this.currentMovementObject.updateFunction(this.currentMovementObject.end - this.t);
-        this.t = this.currentMovementObject.end;
-      }
-      
-      this.currentMovementObject = newMovementObject;
+        
+
+        this.movementUpdateDeltaTime = this.currentMovementObject.rangeEnd - this.currentMovementObject.rangeStart;
+
+        // at this point position should be at the last position for previous range object range
+
+        this.currentRangeObject = null
+
+      } 
     }
     
     if (this.currentMovementObject && this.currentMovementObject.movementMeta) {
@@ -88,16 +106,12 @@ class AnimationObject {
     
     if (updateFunction) {
       //console.log(this);
-      updateFunction(t - this.currentMovementObject.min, t - this.t, this.currentMovementObject.movementMeta);
+      updateFunction(t - this.movementStartTime, t - this.movementUpdateDeltaTime, this.currentMovementObject.movementMeta);
       //console.log("Absolute T: " + t);
       //console.log("this.t: "+this.t);
-    }
 
-    //if (this.start != null) {
-      this.t = t;
-    //}
-    
-    
+      this.movementUpdateDeltaTime = t - this.movementStartTime;
+    }
   }
   
   /**

@@ -6,11 +6,15 @@ class AnimationMovements {
    * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */
-  static HappyBounce(animationObject, absoluteT, deltaT, movementMeta) {
-    animationObject.position.y += (deltaT**2)/300;
-    if (animationObject.position.y > 200) {
-      animationObject.position.y = 200;
+  static HappyBounce(absoluteT, deltaT, movementMeta) {
+    this.position.y += (deltaT**2)/300;
+    if (this.position.y > 200) {
+      this.position.y = 200;
     }
+  }
+
+  static HorizontalSine(absoluteT, deltaT, movementMeta) {
+    this.position.x += 1 * Math.sin((absoluteT)/200.0);
   }
    
   /**
@@ -19,31 +23,31 @@ class AnimationMovements {
    * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */ 
-  static HappyBounce2(animationObject, absoluteT, deltaT, movementMeta) {
-
-    
-    
-    // top = -a * 200 * (200)
-
-    /*
-    console.log("absolute " + absoluteT);
-    console.log("delta " + deltaT);
-
-    console.log(animationObject);
-    if (absoluteT != deltaT) {
-      //exit;
+  static HappyBounce2(absoluteT, deltaT, movementMeta) {
+    if (!movementMeta.startY) {
+      movementMeta.startY = this.position.y;
     }
-    */
-
-    
-    let deltat = absoluteT % movementMeta.root2;
-    
-
-    let height = -(movementMeta.a) * deltat * (deltat - movementMeta.root2);
-    
-    animationObject.position.y = height;
-
+    let bounceTimeDelta = absoluteT % movementMeta.bouncePeriod;
+    let height = movementMeta.acceleration * bounceTimeDelta * (bounceTimeDelta - movementMeta.bouncePeriod);
+    this.position.y = movementMeta.startY + height;
   }
+
+  /** Animation Movement function for Up and Down */
+  static UpAndDown (absoluteT, deltaT, movementMeta) {
+      if (movementMeta.down) {
+        this.position.y += Math.min(deltaT/5.0, 10.);
+        
+        if (this.position.y > 200) {
+          movementMeta.down = false;
+        }
+      } else {
+        this.position.y -= Math.min(deltaT/5.0, 10.);
+        
+        if (this.position.y < -200) {
+          movementMeta.down = true;
+        }
+      }
+    }
   
   /**
    * Animatoin Movement function for Nothing
@@ -52,17 +56,18 @@ class AnimationMovements {
    * @param {number} deltaT - total time since the last call of this action
    */
 
-  static Nothing(animationObject, absoluteT, deltaT, movementMeta) {
+  static Nothing(absoluteT, deltaT, movementMeta) {
   }
 
   /**
-   * Animatoin Movement function for Nothing
+   * Animatoin Movement function for Moving Left
    * @param {AnimationObject} animationObject - The Animation Object
    * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */
 
-  static MoveLeft(animationObject, absoluteT, deltaT, movementMeta) {
+  static Left(absoluteT, deltaT, movementMeta) {
+    this.position.x -= deltaT * 0.03;
   }
   
 }

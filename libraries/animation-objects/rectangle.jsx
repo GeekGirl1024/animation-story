@@ -34,8 +34,8 @@ class Rectangle extends AnimationObject {
     ctx.beginPath();
     ctx.fillStyle = this.fillStyle;
     ctx.strokeStyle = this.strokeStyle;
-    ctx.arc(this.position.x, -this.position.y, this.radius, 0, Math.PI * 2, true);
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    //ctx.arc(this.position.x, -this.position.y, this.radius, 0, Math.PI * 2, true);
+    ctx.fillRect(this.position.x, -this.position.y, this.width, this.height);
     ctx.fill();
     ctx.stroke();
     ctx.restore();

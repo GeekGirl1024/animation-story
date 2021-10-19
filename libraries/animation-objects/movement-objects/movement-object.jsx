@@ -4,14 +4,14 @@ import RangeObject from '../../range-object.jsx'
 class MovementObject extends RangeObject {
   /**
    * Creates a MovementObject.
-   * @param {number} start - start time for this update function. (null indicates beginning of time)
-   * @param {number} end - end time for this update function. (null indicates end of time)
+   * @param {number} rangeStart - start time for this update function. (null indicates beginning of time)
+   * @param {number} rangeEnd - end time for this update function. (null indicates end of time)
    * @param {point} startPosition - Initial position for this update function. (null indicates no specified initial position)
    * @param {point} endPosition - End position for this update function. (null indicates no specified end position)
    * @param {function} updateFunction - actual function that updates the state of the object
    */
-  constructor(min, max, startPosition, endPosition, updateFunction) {
-    super(min, max);
+  constructor(rangeStart, rangeEnd, startPosition, endPosition, updateFunction) {
+    super(rangeStart, rangeEnd);
     this.startPosition = startPosition;
     this.endPosition = endPosition;
     this.t = 0;

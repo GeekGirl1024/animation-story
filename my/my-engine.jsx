@@ -24,16 +24,16 @@ class MyEngine extends Engine {
   CreateDot1() {
     let dot = new Dot(0, 0, 4, "#FFFF00", "#000000");
     
-    dot.AddUpdateFunction(new MovementObject(0, 5000, null, null, function(absoluteT, deltaT) { AnimationMovements.Nothing(dot, absoluteT, deltaT)}));
-    
-    dot.AddUpdateFunction(new MovementObject(5001, null, null, null, function (absoluteT, deltaT) {
-      if (!this.totalDelta) {
-        this.totalDelta = 0;
-      }
+    let dotMovement = new MovementObject(0, 5000, null, null, 
+      AnimationMovements.Nothing.bind(dot)
+    );
 
-      this.position.x += 1 * Math.sin((this.totalDelta + deltaT)/200.0);
-      this.totalDelta += deltaT;
-    }.bind(dot)));
+    dot.AddUpdateFunction(dotMovement);
+
+    
+    dot.AddUpdateFunction(new MovementObject(5001, null, null, null,
+      AnimationMovements.HorizontalSine.bind(dot))
+    );
     
     dot.SortUpdates();
     
@@ -45,38 +45,34 @@ class MyEngine extends Engine {
    * Creates Dot 2
    */
   CreateDot2() {
-    let dot = new Dot(0, 30, 4, "#0000FF", "#000000");
-    /*
-    dot.AddUpdateFunction(null, 1, null, null, function (t) {
-      this.position.x += -150 + 150* t/5000.0;
-    }.bind(dot));
-    */
-    let dotMovement = new MovementObject(0, null, null, null, 
-      function(absoluteT, deltaT, movementMeta) {
-        AnimationMovements.HappyBounce2(dot, absoluteT, deltaT, movementMeta);
-      });
+    let dot = new Dot(100, 20, 4, "#0000FF", "#000000");
 
-    let root1 = 0.0;
-    let root2 = 300.0;
-    let mid = (root2 - root1)/2.0;
-    let top = 30.0;
-    
-    let a = top/(mid**2);
-    dotMovement.movementMeta.root2 = root2;
-    dotMovement.movementMeta.a = a;
+
+    let dotMovement = new MovementObject(null, 5000, null, null, 
+        AnimationMovements.Left.bind(dot)
+      );
+
+    dot.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(5001, 8000, null, null, 
+        AnimationMovements.Nothing.bind(dot)
+      );
 
     dot.AddUpdateFunction(dotMovement);
     
-    /*
-    dot.AddUpdateFunction(10001, null, null, null, function (t) {
-      if (!this.totalDelta) {
-        this.totalDelta = 0;
-      }
-      
-      this.radius = 4 + 20 + 20 * Math.sin((this.totalDelta + t)/500.0);
-      this.totalDelta += t;
-    }.bind(dot));
-    */
+    dotMovement = new MovementObject(8001, null, null, null, 
+        AnimationMovements.HappyBounce2.bind(dot)
+      );
+
+    let bouncePeriod = 300.0;
+    let mid = (bouncePeriod)/2.0;
+    let bounceHeight = 30.0;
+    
+    let acceleration = -bounceHeight/(mid**2);
+    dotMovement.movementMeta.bouncePeriod = bouncePeriod;
+    dotMovement.movementMeta.acceleration = acceleration;
+
+    dot.AddUpdateFunction(dotMovement);
     
     dot.SortUpdates();
     
@@ -94,31 +90,19 @@ class MyEngine extends Engine {
     }.bind(dot));
     */
     let dotMovement = new MovementObject(0, null, null, null, 
-      function(absoluteT, deltaT, movementMeta) {
-        AnimationMovements.HappyBounce2(dot, absoluteT, deltaT, movementMeta);
-      });
+      
+        AnimationMovements.HappyBounce2.bind(dot)
+        );
 
-    let root1 = 0.0;
-    let root2 = 600.0;
-    let mid = (root2 - root1)/2.0;
-    let top = 60.0;
+    let bouncePeriod = 600.0;
+    let mid = (bouncePeriod)/2.0;
+    let bounceHeight = 60.0;
     
-    let a = top/(mid**2);
-    dotMovement.movementMeta.root2 = root2;
-    dotMovement.movementMeta.a = a;
+    let acceleration = -bounceHeight/(mid**2);
+    dotMovement.movementMeta.bouncePeriod = bouncePeriod;
+    dotMovement.movementMeta.acceleration = acceleration;
 
     dot.AddUpdateFunction(dotMovement);
-    
-    /*
-    dot.AddUpdateFunction(10001, null, null, null, function (t) {
-      if (!this.totalDelta) {
-        this.totalDelta = 0;
-      }
-      
-      this.radius = 4 + 20 + 20 * Math.sin((this.totalDelta + t)/500.0);
-      this.totalDelta += t;
-    }.bind(dot));
-    */
     
     dot.SortUpdates();
     
@@ -131,22 +115,7 @@ class MyEngine extends Engine {
   CreateRectangle1() {
     let rectangle = new Rectangle(0, 0, 10, 20, "#FF0000", "#000000");
     
-    rectangle.AddUpdateFunction(new MovementObject(null, null, null, null, function (absoluteT, deltaT, movementMeta) {
-
-      if (this.down) {
-        this.position.y += Math.min(deltaT/5.0, 10.);
-        
-        if (this.position.y > 200) {
-          this.down = false;
-        }
-      } else {
-        this.position.y -= Math.min(deltaT/5.0, 10.);
-        
-        if (this.position.y < -200) {
-          this.down = true;
-        }
-      }
-    }.bind(rectangle)));
+    rectangle.AddUpdateFunction(new MovementObject(null, null, null, null, AnimationMovements.UpAndDown.bind(rectangle)));
     
     rectangle.SortUpdates();
     

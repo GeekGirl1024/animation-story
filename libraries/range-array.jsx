@@ -68,30 +68,30 @@ class RangeArray {
       
         // detect any overlap
         // TODO: check for cleaner way to do this using the RangeObject.contains function
-        if (dataObject1.min == null && dataObject2.min == null) {
+        if (dataObject1.rangeStart == null && dataObject2.rangeStart == null) {
           console.log("dataObject1 and dataObject2 both have negative infinity lower bounds");
           overLap = true;
-        } else if (dataObject1.max == null && dataObject2.max == null) {
+        } else if (dataObject1.rangeEnd == null && dataObject2.rangeEnd == null) {
           console.log("dataObject1 and dataObject2 both have infinity upper bounds");
           overLap = true;
-        } else if (dataObject1.min == null && dataObject1.max == null) {
+        } else if (dataObject1.rangeStart == null && dataObject1.rangeEnd == null) {
           console.log("dataObject1 contains the entire spectrum ");
           overLap = true;
-        } else if (dataObject2.min == null && dataObject2.max == null) {
+        } else if (dataObject2.rangeStart == null && dataObject2.rangeEnd == null) {
           console.log("dataObject2 contains the entire spectrum ");
           overLap = true;
-        } else if ((dataObject1.min == null || dataObject2.max == null) && dataObject2.min <= dataObject1.max) {
+        } else if ((dataObject1.rangeStart == null || dataObject2.rangeEnd == null) && dataObject2.rangeStart <= dataObject1.rangeEnd) {
           console.log("dataObject1 upper bound contains dataObject2 lower bound ");
           overLap = true;
-        } else if ((dataObject2.min == null || dataObject1.max == null) && dataObject1.min <= dataObject2.max) {
+        } else if ((dataObject2.rangeStart == null || dataObject1.rangeEnd == null) && dataObject1.rangeStart <= dataObject2.rangeEnd) {
           console.log("dataObject2 upper bound contains dataObject1 lower bound ");
           overLap = true;
-        } else if (dataObject1.min < dataObject2.min
-          && dataObject1.max < dataObject2.min) {
+        } else if (dataObject1.rangeStart < dataObject2.rangeStart
+          && dataObject1.rangeEnd < dataObject2.rangeStart) {
           // dataObject1 is less than dataObject2
           overLap = false;
-        } else if (dataObject2.min < dataObject1.min
-          && dataObject2.max < dataObject1.min) {
+        } else if (dataObject2.rangeStart < dataObject1.rangeStart
+          && dataObject2.rangeEnd < dataObject1.rangeStart) {
           // dataObject2 is less than dataObject1
           overLap = false;
         } else {
@@ -105,7 +105,7 @@ class RangeArray {
           throw new MyError("Overlapping Range Detected");        
         }
       
-        return dataObject1.min > dataObject2.min;
+        return dataObject1.rangeStart > dataObject2.rangeStart;
       });
       
       this.current = 0;
