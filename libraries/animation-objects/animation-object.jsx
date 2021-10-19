@@ -88,7 +88,7 @@ class AnimationObject {
     
     if (updateFunction) {
       //console.log(this);
-      updateFunction(t - this.currentMovementObject.min, t - this.t);
+      updateFunction(t - this.currentMovementObject.min, t - this.t, this.currentMovementObject.movementMeta);
       //console.log("Absolute T: " + t);
       //console.log("this.t: "+this.t);
     }

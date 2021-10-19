@@ -51,7 +51,21 @@ class MyEngine extends Engine {
       this.position.x += -150 + 150* t/5000.0;
     }.bind(dot));
     */
-    dot.AddUpdateFunction(new MovementObject(0, null, null, null, function(absoluteT, deltaT) { AnimationMovements.HappyBounce2(dot, absoluteT, deltaT)}));
+    let dotMovement = new MovementObject(0, null, null, null, 
+      function(absoluteT, deltaT, movementMeta) {
+        AnimationMovements.HappyBounce2(dot, absoluteT, deltaT, movementMeta);
+      });
+
+    let root1 = 0.0;
+    let root2 = 300.0;
+    let mid = (root2 - root1)/2.0;
+    let top = 30.0;
+    
+    let a = top/(mid**2);
+    dotMovement.movementMeta.root2 = root2;
+    dotMovement.movementMeta.a = a;
+
+    dot.AddUpdateFunction(dotMovement);
     
     /*
     dot.AddUpdateFunction(10001, null, null, null, function (t) {
@@ -79,7 +93,21 @@ class MyEngine extends Engine {
       this.position.x += -150 + 150* t/5000.0;
     }.bind(dot));
     */
-    dot.AddUpdateFunction(new MovementObject(0, null, null, null, function(absoluteT, deltaT) { AnimationMovements.HappyBounce2(dot, absoluteT, deltaT)}));
+    let dotMovement = new MovementObject(0, null, null, null, 
+      function(absoluteT, deltaT, movementMeta) {
+        AnimationMovements.HappyBounce2(dot, absoluteT, deltaT, movementMeta);
+      });
+
+    let root1 = 0.0;
+    let root2 = 600.0;
+    let mid = (root2 - root1)/2.0;
+    let top = 60.0;
+    
+    let a = top/(mid**2);
+    dotMovement.movementMeta.root2 = root2;
+    dotMovement.movementMeta.a = a;
+
+    dot.AddUpdateFunction(dotMovement);
     
     /*
     dot.AddUpdateFunction(10001, null, null, null, function (t) {
@@ -103,7 +131,7 @@ class MyEngine extends Engine {
   CreateRectangle1() {
     let rectangle = new Rectangle(0, 0, 10, 20, "#FF0000", "#000000");
     
-    rectangle.AddUpdateFunction(new MovementObject(null, null, null, null, function (absoluteT, deltaT) {
+    rectangle.AddUpdateFunction(new MovementObject(null, null, null, null, function (absoluteT, deltaT, movementMeta) {
 
       if (this.down) {
         this.position.y += Math.min(deltaT/5.0, 10.);

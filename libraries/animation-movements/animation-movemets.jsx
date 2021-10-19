@@ -6,7 +6,7 @@ class AnimationMovements {
    * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */
-  static HappyBounce(animationObject, absoluteT, deltaT) {
+  static HappyBounce(animationObject, absoluteT, deltaT, movementMeta) {
     animationObject.position.y += (deltaT**2)/300;
     if (animationObject.position.y > 200) {
       animationObject.position.y = 200;
@@ -19,14 +19,9 @@ class AnimationMovements {
    * @param {number} absoluteT - total time since the start of this action
    * @param {number} deltaT - total time since the last call of this action
    */ 
-  static HappyBounce2(animationObject, absoluteT, deltaT) {
+  static HappyBounce2(animationObject, absoluteT, deltaT, movementMeta) {
 
-    let root1 = 0.0;
-    let root2 = 300.0;
-    let mid = (root2 - root1)/2.0;
-    let top = 30.0;
     
-    let a = top/(mid**2);
     
     // top = -a * 200 * (200)
 
@@ -41,10 +36,10 @@ class AnimationMovements {
     */
 
     
-    let deltat = absoluteT % root2;
+    let deltat = absoluteT % movementMeta.root2;
     
 
-    let height = -(a) * deltat * (deltat - root2);
+    let height = -(movementMeta.a) * deltat * (deltat - movementMeta.root2);
     
     animationObject.position.y = height;
 
@@ -57,7 +52,7 @@ class AnimationMovements {
    * @param {number} deltaT - total time since the last call of this action
    */
 
-  static Nothing(animationObject, absoluteT, deltaT) {
+  static Nothing(animationObject, absoluteT, deltaT, movementMeta) {
   }
 
   /**
@@ -67,7 +62,7 @@ class AnimationMovements {
    * @param {number} deltaT - total time since the last call of this action
    */
 
-  static MoveLeft(animationObject, absoluteT, deltaT) {
+  static MoveLeft(animationObject, absoluteT, deltaT, movementMeta) {
   }
   
 }
