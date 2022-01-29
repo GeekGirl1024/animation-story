@@ -92,6 +92,62 @@ class AnimationMovements {
     
         //console.log(deltaT);
   }
+
+  static Spiral(absoluteT, deltaT, movementMeta){
+    if (movementMeta.radius == null) {
+      movementMeta.radius = Math.sqrt(this.position.y**2 + this.position.x**2);
+
+    }
+    
+    if (movementMeta.radians == null) {
+      movementMeta.radians = Math.atan(this.position.y/this.position.x);
+
+      if (this.position.x < 0) {
+        movementMeta.radians += Math.PI;
+      }
+
+
+      /*
+      console.log(this.position.y/this.position.x);
+      console.log(Math.atan(this.position.y/this.position.x));
+      */
+    }
+  
+    if (movementMeta.deltaRadians == null) {
+      movementMeta.deltaRadians = 0;
+    }
+
+    if (movementMeta.deltaRadius == null) {
+      movementMeta.deltaRadius = 0;
+    }
+
+/*
+    console.log("delta T " + deltaT);
+    console.log("delta Radians : " + movementMeta.deltaRadians);
+    console.log("delta Radius : " + movementMeta.deltaRadius);
+  */
+    movementMeta.radians += deltaT * movementMeta.deltaRadians;
+    movementMeta.radius += deltaT * movementMeta.deltaRadius;
+/*
+    console.log("radius");
+    console.log(movementMeta.radius);
+    console.log("radians");
+    console.log(movementMeta.radians);
+    console.log("delta radius");
+    console.log(movementMeta.deltaRadius);
+    console.log("delta radians");
+    console.log(movementMeta.deltaRadians);
+
+    exit;
+*/
+    this.position.x = movementMeta.radius * Math.cos(movementMeta.radians);
+    this.position.y = movementMeta.radius * Math.sin(movementMeta.radians);
+
+
+
+
+
+  }
   
 }
 
