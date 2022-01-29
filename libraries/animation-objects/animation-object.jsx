@@ -58,8 +58,10 @@ class AnimationObject {
       // Get new MovementObject
       let newMovementObject = this.updates.GetRangeObject(t);
       if (newMovementObject) {
+        //console.log("New Range Object");
         if (newMovementObject.startPosition) {
           // if new rangeObject's startPosition is defined, reset from startPosition
+          //console.log("reset start Position");
           this.position.x = newMovementObject.startPosition.x;
           this.position.y = newMovementObject.startPosition.y;
         } else if (newMovementObject.rangeStart) {
@@ -70,6 +72,7 @@ class AnimationObject {
         }
 
         this.currentMovementObject = newMovementObject;
+        this.movementUpdateDeltaTime = t - this.movementStartTime;
 
         // At this point ready to calculate movement update.
 
@@ -105,10 +108,7 @@ class AnimationObject {
     }
     
     if (updateFunction) {
-      //console.log(this);
-      updateFunction(t - this.movementStartTime, t - this.movementUpdateDeltaTime, this.currentMovementObject.movementMeta);
-      //console.log("Absolute T: " + t);
-      //console.log("this.t: "+this.t);
+      updateFunction(t - this.movementStartTime, t - this.movementStartTime - this.movementUpdateDeltaTime, this.currentMovementObject.movementMeta);
 
       this.movementUpdateDeltaTime = t - this.movementStartTime;
     }

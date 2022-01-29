@@ -30,6 +30,10 @@ class AnimationMovements {
     let bounceTimeDelta = absoluteT % movementMeta.bouncePeriod;
     let height = movementMeta.acceleration * bounceTimeDelta * (bounceTimeDelta - movementMeta.bouncePeriod);
     this.position.y = movementMeta.startY + height;
+    if (movementMeta.xSpeed) {
+      this.position.x += deltaT * movementMeta.xSpeed;
+    }
+    //console.log(deltaT);
   }
 
   /** Animation Movement function for Up and Down */
@@ -68,6 +72,7 @@ class AnimationMovements {
 
   static HorizontalMove(absoluteT, deltaT, movementMeta) {
     this.position.x += deltaT * movementMeta.speed;
+        //console.log(deltaT);
   }
   
 }

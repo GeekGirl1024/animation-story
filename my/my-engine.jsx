@@ -22,22 +22,42 @@ class MyEngine extends Engine {
       );
     mainDot.AddUpdateFunction(dotMovement);
 
-    dotMovement = new MovementObject(3001, null, null, null, 
+    dotMovement = new MovementObject(3001, 5000, null, null, 
       AnimationMovements.Nothing.bind(mainDot)
     );
+    mainDot.AddUpdateFunction(dotMovement);
+
+    // Bounce every 300 ticks up to 30 high
+    let bouncePeriod = 300.0;
+    let mid = (bouncePeriod)/2.0;
+    let bounceHeight = 30.0;
+    let acceleration = -bounceHeight/(mid**2);
+
+    dotMovement = new MovementObject(5001, 8000, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration, xSpeed: -0.03 }
+      );
+
+    mainDot.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(8001, null, null, null, 
+        AnimationMovements.Nothing.bind(mainDot)
+      );
+
     mainDot.AddUpdateFunction(dotMovement);
 
     mainDot.SortUpdates();
     this.animationObjects.push(mainDot);
     
 
-    
+    /*
     this.CreateDot1();
     this.CreateDot2();
     this.CreateDot3();
     this.CreateRectangle1();
 
     this.CreateBounceLine();
+    */
     
   }
 
