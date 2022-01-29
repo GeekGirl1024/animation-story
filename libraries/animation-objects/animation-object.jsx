@@ -101,7 +101,7 @@ class AnimationObject {
     }
     
     if (this.currentMovementObject && this.currentMovementObject.movementMeta) {
-      updateFunction = this.currentMovementObject.movementMeta.updateFunction;
+      updateFunction = this.currentMovementObject.updateFunction;
     }
     
     if (updateFunction) {

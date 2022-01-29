@@ -12,13 +12,35 @@ class MyEngine extends Engine {
    * Initializes the objects in the engine
    */
   Init() {
+
+    let mainDot = new Dot(100, 0, 4, "#FF00FF", "#000000");
+
+    // move -0.03/tick horizontally for 5 sec
+    let dotMovement = new MovementObject(null, 3000, null, null, 
+        AnimationMovements.HorizontalMove.bind(mainDot),
+        { speed: -0.03 }
+      );
+    mainDot.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(3001, null, null, null, 
+      AnimationMovements.Nothing.bind(mainDot)
+    );
+    mainDot.AddUpdateFunction(dotMovement);
+
+    mainDot.SortUpdates();
+    this.animationObjects.push(mainDot);
+    
+
+    
     this.CreateDot1();
     this.CreateDot2();
     this.CreateDot3();
     this.CreateRectangle1();
 
     this.CreateBounceLine();
+    
   }
+
 
   /**
    * Creates Bounceing dots
@@ -41,11 +63,9 @@ class MyEngine extends Engine {
       dot.AddUpdateFunction(dotMovement);
 
       dotMovement = new MovementObject(i*100 + 1, null, null, null, 
-        AnimationMovements.HappyBounce2.bind(dot)
+        AnimationMovements.HappyBounce2.bind(dot),
+        { bouncePeriod : bouncePeriod, acceleration: acceleration }
       );
-
-      dotMovement.movementMeta.bouncePeriod = bouncePeriod;
-      dotMovement.movementMeta.acceleration = acceleration;
 
       dot.AddUpdateFunction(dotMovement);
       
@@ -87,9 +107,9 @@ class MyEngine extends Engine {
 
     // move -0.03/tick horizontally for 5 sec
     let dotMovement = new MovementObject(null, 5000, null, null, 
-        AnimationMovements.HorizontalMove.bind(dot)
+        AnimationMovements.HorizontalMove.bind(dot),
+        { speed: -0.03 }
       );
-    dotMovement.movementMeta.speed = -0.03;
     dot.AddUpdateFunction(dotMovement);
 
     // pause for 3 seconds
@@ -100,17 +120,15 @@ class MyEngine extends Engine {
     dot.AddUpdateFunction(dotMovement);
     
     // Bounce every 300 ticks up to 30 high
-    dotMovement = new MovementObject(8001, null, null, null, 
-        AnimationMovements.HappyBounce2.bind(dot)
-      );
-
     let bouncePeriod = 300.0;
     let mid = (bouncePeriod)/2.0;
     let bounceHeight = 30.0;
-    
     let acceleration = -bounceHeight/(mid**2);
-    dotMovement.movementMeta.bouncePeriod = bouncePeriod;
-    dotMovement.movementMeta.acceleration = acceleration;
+
+    dotMovement = new MovementObject(8001, null, null, null, 
+        AnimationMovements.HappyBounce2.bind(dot),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration }
+      );
 
     dot.AddUpdateFunction(dotMovement);
     
@@ -126,17 +144,16 @@ class MyEngine extends Engine {
     let dot = new Dot(30, 100, 4, "#00FF00", "#000000");
 
     // bounce every 600 ticks to a hight of 60.
-    let dotMovement = new MovementObject(0, null, null, null, 
-      AnimationMovements.HappyBounce2.bind(dot)
-    );
-
     let bouncePeriod = 600.0;
     let mid = (bouncePeriod)/2.0;
     let bounceHeight = 60.0;
     
     let acceleration = -bounceHeight/(mid**2);
-    dotMovement.movementMeta.bouncePeriod = bouncePeriod;
-    dotMovement.movementMeta.acceleration = acceleration;
+
+    let dotMovement = new MovementObject(0, null, null, null, 
+      AnimationMovements.HappyBounce2.bind(dot),
+      { bouncePeriod: bouncePeriod, acceleration: acceleration}
+    );
 
     dot.AddUpdateFunction(dotMovement);
     
