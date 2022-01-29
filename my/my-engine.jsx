@@ -13,14 +13,16 @@ class MyEngine extends Engine {
    */
   Init() {
     // Create main Dot 1
-    let mainDot1 = new Dot(120, 0, 4, "#FF00FF", "#000000");
+    let mainDot1 = new Dot(100, 0, 4, "#FF00FF", "#000000");
     this.animationObjects.push(mainDot1);
 
     // Create main Dot 2
-    let mainDot2 = new Dot(-120, 0, 4, "#FFFF00", "#000000");
+    let mainDot2 = new Dot(-100, 0, 4, "#FFFF00", "#000000");
     this.animationObjects.push(mainDot2);
 
-    // Time 0
+    // Time + 3000
+    // Dot 1 happy bounce move to middle
+    // Dot 2 move to middle
 
     // Bounce every 300 ticks up to 30 high while moving -0.03/tick x
     let bouncePeriod = 300.0;
@@ -28,42 +30,55 @@ class MyEngine extends Engine {
     let bounceHeight = 30.0;
     let acceleration = -bounceHeight/(mid**2);
 
-    let dotMovement = new MovementObject(null, 3000, null, null, 
+    let timeStamp = 0;
+
+    let dotMovement = new MovementObject(null, timeStamp + 2999, null, null, 
         AnimationMovements.HappyBounce2.bind(mainDot1),
         { bouncePeriod: bouncePeriod, acceleration: acceleration, xSpeed: -0.03 }
       );
 
     mainDot1.AddUpdateFunction(dotMovement);
 
-    // move 0.03/tick horizontally for 5 sec
-    dotMovement = new MovementObject(null, 3000, null, null, 
+    dotMovement = new MovementObject(null, timeStamp + 2999, null, null, 
         AnimationMovements.HorizontalMove.bind(mainDot2),
         { speed: 0.03 }
       );
     mainDot2.AddUpdateFunction(dotMovement);
+    timeStamp += 3000;
 
-    // Time 3001
-    dotMovement = new MovementObject(3001, 4000, null, null, 
+    // Time + 1000
+    // Dot 1 pause 1 sec
+    // Dot 2 pause 4 sec
+    
+    dotMovement = new MovementObject(timeStamp, timeStamp + 999, null, null, 
       AnimationMovements.Nothing.bind(mainDot1)
     );
     mainDot1.AddUpdateFunction(dotMovement);
 
-    dotMovement = new MovementObject(3001, 7000, null, null, 
+    dotMovement = new MovementObject(timeStamp, timeStamp + 3999, null, null, 
       AnimationMovements.Nothing.bind(mainDot2)
     );
     mainDot2.AddUpdateFunction(dotMovement);
+    timeStamp += 1000;
 
-    // time 4000
-    dotMovement = new MovementObject(4001, 7000, null, null, 
+    // time + 3000
+    // Dot 1 happy bounce 3 sec
+    // (Dot 2 continue to pause 3 more sec)
+    
+    dotMovement = new MovementObject(timeStamp, timeStamp + 2999, null, null, 
         AnimationMovements.HappyBounce2.bind(mainDot1),
         { bouncePeriod: bouncePeriod, acceleration: acceleration }
       );
 
     mainDot1.AddUpdateFunction(dotMovement);
+    timeStamp += 3000;
 
-    // time 8000
+    // time + 3000
+    // Dot 2 happy bounce 3 sec
+    // Dot 1 pause
+    
 
-    dotMovement = new MovementObject(8001, 11000, null, null, 
+    dotMovement = new MovementObject(timeStamp, timeStamp + 2999, null, null, 
         AnimationMovements.HappyBounce2.bind(mainDot2),
         { bouncePeriod: bouncePeriod, acceleration: acceleration }
       );
@@ -72,15 +87,17 @@ class MyEngine extends Engine {
 
     
 
-    dotMovement = new MovementObject(8001, null, null, null, 
+    dotMovement = new MovementObject(timeStamp, null, null, null, 
         AnimationMovements.Nothing.bind(mainDot1)
       );
+    mainDot1.AddUpdateFunction(dotMovement);
 
+    timeStamp += 3000;
     
 
-    // time 11000
-
-      dotMovement = new MovementObject(11001, null, null, null, 
+    // time - to end
+    // Dot 2 pause
+      dotMovement = new MovementObject(timeStamp, null, null, null, 
         AnimationMovements.Nothing.bind(mainDot2)
       );
 
