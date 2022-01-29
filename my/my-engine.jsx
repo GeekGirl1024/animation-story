@@ -12,42 +12,86 @@ class MyEngine extends Engine {
    * Initializes the objects in the engine
    */
   Init() {
+    // Create main Dot 1
+    let mainDot1 = new Dot(120, 0, 4, "#FF00FF", "#000000");
+    this.animationObjects.push(mainDot1);
 
-    let mainDot = new Dot(100, 0, 4, "#FF00FF", "#000000");
+    // Create main Dot 2
+    let mainDot2 = new Dot(-120, 0, 4, "#FFFF00", "#000000");
+    this.animationObjects.push(mainDot2);
 
-    // move -0.03/tick horizontally for 5 sec
-    let dotMovement = new MovementObject(null, 3000, null, null, 
-        AnimationMovements.HorizontalMove.bind(mainDot),
-        { speed: -0.03 }
-      );
-    mainDot.AddUpdateFunction(dotMovement);
+    // Time 0
 
-    dotMovement = new MovementObject(3001, 5000, null, null, 
-      AnimationMovements.Nothing.bind(mainDot)
-    );
-    mainDot.AddUpdateFunction(dotMovement);
-
-    // Bounce every 300 ticks up to 30 high
+    // Bounce every 300 ticks up to 30 high while moving -0.03/tick x
     let bouncePeriod = 300.0;
     let mid = (bouncePeriod)/2.0;
     let bounceHeight = 30.0;
     let acceleration = -bounceHeight/(mid**2);
 
-    dotMovement = new MovementObject(5001, 8000, null, null, 
-        AnimationMovements.HappyBounce2.bind(mainDot),
+    let dotMovement = new MovementObject(null, 3000, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot1),
         { bouncePeriod: bouncePeriod, acceleration: acceleration, xSpeed: -0.03 }
       );
 
-    mainDot.AddUpdateFunction(dotMovement);
+    mainDot1.AddUpdateFunction(dotMovement);
 
-    dotMovement = new MovementObject(8001, null, null, null, 
-        AnimationMovements.Nothing.bind(mainDot)
+    // move 0.03/tick horizontally for 5 sec
+    dotMovement = new MovementObject(null, 3000, null, null, 
+        AnimationMovements.HorizontalMove.bind(mainDot2),
+        { speed: 0.03 }
+      );
+    mainDot2.AddUpdateFunction(dotMovement);
+
+    // Time 3001
+    dotMovement = new MovementObject(3001, 4000, null, null, 
+      AnimationMovements.Nothing.bind(mainDot1)
+    );
+    mainDot1.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(3001, 7000, null, null, 
+      AnimationMovements.Nothing.bind(mainDot2)
+    );
+    mainDot2.AddUpdateFunction(dotMovement);
+
+    // time 4000
+    dotMovement = new MovementObject(4001, 7000, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot1),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration }
       );
 
-    mainDot.AddUpdateFunction(dotMovement);
+    mainDot1.AddUpdateFunction(dotMovement);
 
-    mainDot.SortUpdates();
-    this.animationObjects.push(mainDot);
+    // time 8000
+
+    dotMovement = new MovementObject(8001, 11000, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot2),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration }
+      );
+
+    mainDot2.AddUpdateFunction(dotMovement);
+
+    
+
+    dotMovement = new MovementObject(8001, null, null, null, 
+        AnimationMovements.Nothing.bind(mainDot1)
+      );
+
+    
+
+    // time 11000
+
+      dotMovement = new MovementObject(11001, null, null, null, 
+        AnimationMovements.Nothing.bind(mainDot2)
+      );
+
+    mainDot2.AddUpdateFunction(dotMovement);
+
+    
+
+    mainDot1.SortUpdates();
+
+    mainDot2.SortUpdates();
+    
     
 
     /*
