@@ -48,70 +48,106 @@ class AnimationObject {
    * @param {number} t - absolute time
   */
   Update(t) {
+    try{
     let updateFunction = null
 
+    // if current movement object exists and the t is within the time range
     if (this.currentMovementObject && this.currentMovementObject.Contains(t)) {
       // if we already have the right movement object
-    } else {
-      // if we need to get the next movement object
 
-      // Get new MovementObject
-      let newMovementObject = this.updates.GetRangeObject(t);
-      if (newMovementObject) {
-        //console.log("New Range Object");
-        if (newMovementObject.startPosition) {
-          // if new rangeObject's startPosition is defined, reset from startPosition
-          //console.log("reset start Position");
-          this.position.x = newMovementObject.startPosition.x;
-          this.position.y = newMovementObject.startPosition.y;
-        } else if (newMovementObject.rangeStart) {
-          this.movementStartTime = newMovementObject.rangeStart;
-        } else {
-          // this should be at the begining of all movements
-          this.movementStartTime = 0;
-        }
-
-        this.currentMovementObject = newMovementObject;
-        this.movementUpdateDeltaTime = t - this.movementStartTime;
-
-        // At this point ready to calculate movement update.
-
-        
-
-      } else if(this.currentRangeObject) {
-        if (this.currentRangeObject.endPosition) {
-          // if new rangeObject's startPosition is not defined, and the previous rangeObject's 
-          this.position.x = this.currentMovementObject.endPosition.x;
-          this.position.y = this.currentMovementObject.endPosition.y;
-        } else if (this.currentMovementObject.rangeEnd) {
-          // calculated the startPosition from the previous rangeObject's end time
-          this.currentMovementObject.updateFunction(
-            this.currentMovementObject.rangeEnd - this.currentMovementObject.rangeStart, 
-            this.currentMovementObject.rangeEnd - this.currentMovementObject.rangeStart - this.movementUpdateDeltaTime,
-            this.currentMovementObject.movementMeta);
-        } else {
-          // should never get here
-        }
-        
-
-        this.movementUpdateDeltaTime = this.currentMovementObject.rangeEnd - this.currentMovementObject.rangeStart;
-
-        // at this point position should be at the last position for previous range object range
-
-        this.currentRangeObject = null
-
-      } 
-    }
-    
-    if (this.currentMovementObject && this.currentMovementObject.movementMeta) {
       updateFunction = this.currentMovementObject.updateFunction;
+      
+      if (updateFunction && this.currentMovementObject.movementMeta) {
+        updateFunction(t - this.movementStartTime, t - this.movementStartTime - this.movementUpdateDeltaTime, this.currentMovementObject.movementMeta);
+
+        this.movementUpdateDeltaTime = t - this.movementStartTime;
+      } else {
+        // should never really get here. If so something is wrong?
+      }
+
+      return;
+    }
+
+    //console.log("try to get new movement object");
+    // we need to get the next movement object
+
+    // If there is a previous movement,
+    // let's finish the remaining movement of the previous movement first
+    if (this.currentMovementObject) {
+      updateFunction = this.currentMovementObject.updateFunction;
+      
+      if (updateFunction && this.currentMovementObject.movementMeta) {
+        updateFunction(this.currentMovementObject.rangeEnd - this.movementStartTime, this.currentMovementObject.rangeEnd- this.movementStartTime - this.movementUpdateDeltaTime, this.currentMovementObject.movementMeta);
+
+        this.movementUpdateDeltaTime = t - this.movementStartTime;
+      } else {
+        // should never really get here. If so something is wrong?
+      }
+
+      if (this.currentMovementObject.endPosition) {
+        // if end position is defined, we set the position to that 
+        this.position.x = this.currentMovementObject.endPosition.x;
+        this.position.y = this.currentMovementObject.endPosition.y;
+      }
+
+
+    }
+
+    // Get new MovementObject
+    let newMovementObject = this.updates.GetRangeObject(t);
+    if (newMovementObject) {
+      this.movementUpdateDeltaTime = 0;
+      this.currentMovementObject = newMovementObject;
+
+      //console.log("New Range Object");
+      if (newMovementObject.startPosition) {
+        // if new rangeObject's startPosition is defined, reset from startPosition
+        //console.log("reset start Position");
+        this.position.x = newMovementObject.startPosition.x;
+        this.position.y = newMovementObject.startPosition.y;
+      }
+      
+      
+      if (newMovementObject.rangeStart) {
+        this.movementStartTime = newMovementObject.rangeStart;
+      } else {
+        // this should be at the begining of all movements
+        // Also I don't think this should be hit anyhmore
+        this.movementStartTime = 0;
+      }
+
+      // this is repeated code, maybe refactor
+      updateFunction = this.currentMovementObject.updateFunction
+      if (updateFunction && this.currentMovementObject.movementMeta) {
+        updateFunction(t - this.movementStartTime, t - this.movementStartTime - this.movementUpdateDeltaTime, this.currentMovementObject.movementMeta);
+
+        this.movementUpdateDeltaTime = t - this.movementStartTime;
+      } else {
+        // should never really get here. If so something is wrong?
+      }
+
+      
+
+      
+
+      /* this should not be set yet
+      this.currentMovementObject = newMovementObject;
+      this.movementUpdateDeltaTime = t - this.movementStartTime;
+      */
+
+      // At this point ready to calculate movement update.
+
+      
+
+    } else {
+      this.currentMovementObject = null;
     }
     
-    if (updateFunction) {
-      updateFunction(t - this.movementStartTime, t - this.movementStartTime - this.movementUpdateDeltaTime, this.currentMovementObject.movementMeta);
-
-      this.movementUpdateDeltaTime = t - this.movementStartTime;
+    } catch (e){
+      console.log(e);
+      throw(e);
     }
+    return;
   }
   
   /**

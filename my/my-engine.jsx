@@ -32,73 +32,143 @@ class MyEngine extends Engine {
 
     let timeStamp = 0;
 
-    let dotMovement = new MovementObject(null, timeStamp + 2999, null, null, 
+    // timeStamp + 2400
+    // dot 1 bounce 7 times moving left
+    // dot 2 nothing 3000
+    let dotMovement = new MovementObject(null, timeStamp + 2100, null, null, 
         AnimationMovements.HappyBounce2.bind(mainDot1),
         { bouncePeriod: bouncePeriod, acceleration: acceleration, xSpeed: -0.03 }
       );
 
     mainDot1.AddUpdateFunction(dotMovement);
 
-    dotMovement = new MovementObject(null, timeStamp + 2999, null, null, 
-        AnimationMovements.HorizontalMove.bind(mainDot2),
-        { speed: 0.03 }
+        dotMovement = new MovementObject(timeStamp + 2100, timeStamp + 2100 + 300, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot1),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration * 2.0/3.0, xSpeed: -0.03 }
       );
+
+    mainDot1.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(timeStamp + 2400, timeStamp + 2400 + 300, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot1),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration / 3.0, xSpeed: -0.03 }
+      );
+
+    mainDot1.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(timeStamp + 2700, timeStamp + 2700 + 300, null, null, 
+      AnimationMovements.BasicMove.bind(mainDot1),
+      { xSpeed: -0.03 }
+    );
+
+    mainDot1.AddUpdateFunction(dotMovement);
+
+    
+    dotMovement = new MovementObject(timeStamp, timeStamp + 3000, null, null, 
+      AnimationMovements.BasicMove.bind(mainDot2),
+      { xSpeed: 0.03 }
+    );
     mainDot2.AddUpdateFunction(dotMovement);
+/*
+    dotMovement = new MovementObject(null, timeStamp + 3000, null, null, 
+      AnimationMovements.Nothing.bind(mainDot2),
+      {}
+    );
+    mainDot2.AddUpdateFunction(dotMovement);
+*/
     timeStamp += 3000;
 
+    // timeStamp + 3000
+    // dot 1 nothing 3000
+    // dot 2 move right 3000
+/*
+    dotMovement = new MovementObject(timeStamp, timeStamp + 3000, null, null, 
+      AnimationMovements.Nothing.bind(mainDot1),
+      {}
+    );
+    mainDot1.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(timeStamp, timeStamp + 3000, null, null, 
+      AnimationMovements.BasicMove.bind(mainDot2),
+      { xSpeed: 0.03 }
+    );
+    mainDot2.AddUpdateFunction(dotMovement);
+    timeStamp += 3000;
+*/
+    
     // Time + 1000
     // Dot 1 pause 1 sec
-    // Dot 2 pause 4 sec
+    // Dot 2 pause 1 sec + 1.2 sec
     
-    dotMovement = new MovementObject(timeStamp, timeStamp + 999, null, null, 
+    dotMovement = new MovementObject(timeStamp, timeStamp + 1000, null, null, 
       AnimationMovements.Nothing.bind(mainDot1)
     );
     mainDot1.AddUpdateFunction(dotMovement);
 
-    dotMovement = new MovementObject(timeStamp, timeStamp + 3999, null, null, 
+    dotMovement = new MovementObject(timeStamp, timeStamp + 2200, null, null, 
       AnimationMovements.Nothing.bind(mainDot2)
     );
     mainDot2.AddUpdateFunction(dotMovement);
     timeStamp += 1000;
 
-    // time + 3000
-    // Dot 1 happy bounce 3 sec
-    // (Dot 2 continue to pause 3 more sec)
+    // time + 1200
+    // Dot 1 happy bounce 3 times and pause 300ms
+    // (Dot 2 continue to pause)
     
-    dotMovement = new MovementObject(timeStamp, timeStamp + 2999, null, null, 
+    dotMovement = new MovementObject(timeStamp, timeStamp + 900, null, null, 
         AnimationMovements.HappyBounce2.bind(mainDot1),
         { bouncePeriod: bouncePeriod, acceleration: acceleration }
       );
 
     mainDot1.AddUpdateFunction(dotMovement);
-    timeStamp += 3000;
 
-    // time + 3000
-    // Dot 2 happy bounce 3 sec
+    dotMovement = new MovementObject(timeStamp + 900, timeStamp + 1200, null, null, 
+      AnimationMovements.Nothing.bind(mainDot1),
+      {}
+    );
+
+    mainDot1.AddUpdateFunction(dotMovement);
+
+    timeStamp += 1200;
+
+    // time + 1900
+    // Dot 2 happy bounce 3 times 900ms pause 1 sec
     // Dot 1 pause
     
 
-    dotMovement = new MovementObject(timeStamp, timeStamp + 2999, null, null, 
+    dotMovement = new MovementObject(timeStamp, timeStamp + 900, null, null, 
         AnimationMovements.HappyBounce2.bind(mainDot2),
         { bouncePeriod: bouncePeriod, acceleration: acceleration }
       );
 
     mainDot2.AddUpdateFunction(dotMovement);
 
+    dotMovement = new MovementObject(timeStamp + 900, timeStamp + 900 + 1000, null, null, 
+      AnimationMovements.Nothing.bind(mainDot2)
+    );
+    mainDot2.AddUpdateFunction(dotMovement);
     
 
-    dotMovement = new MovementObject(timeStamp, null, null, null, 
+    dotMovement = new MovementObject(timeStamp, timeStamp + 1900, null, null, 
         AnimationMovements.Nothing.bind(mainDot1)
       );
     mainDot1.AddUpdateFunction(dotMovement);
 
-    timeStamp += 3000;
+    timeStamp += 1900;
     
 
     // time - to end
-    // Dot 2 pause
-      dotMovement = new MovementObject(timeStamp, null, null, null, 
-        AnimationMovements.Nothing.bind(mainDot2)
+    
+    dotMovement = new MovementObject(timeStamp, timeStamp + 3000, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot1),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration }
+      );
+
+    mainDot1.AddUpdateFunction(dotMovement);
+
+    dotMovement = new MovementObject(timeStamp, timeStamp + 3000, null, null, 
+        AnimationMovements.HappyBounce2.bind(mainDot2),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration }
       );
 
     mainDot2.AddUpdateFunction(dotMovement);

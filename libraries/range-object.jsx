@@ -1,4 +1,6 @@
-/** Class representing the RangeObject. */
+/**
+  Class representing the RangeObject.
+*/
 class RangeObject {
   /**
    * Creates a RangeObject.
@@ -6,8 +8,12 @@ class RangeObject {
    * @param {number} rangeEnd - end point for this RangeObject. (null indicates end of time)
    */
   constructor(rangeStart, rangeEnd){
+    // For now rangeStart will not be included
+    // For now rangeEnd will be included
     this.rangeStart = rangeStart;
+    this.rangeStartInclude = false;
     this.rangeEnd = rangeEnd;
+    this.rangeEndInclude = true
   }
   
   /**
@@ -16,7 +22,9 @@ class RangeObject {
    * @return {boolean} - boolean indicating if t is within the bounds of the RangeObject
    */
   Contains(t) {
-    
+    // For now let's ignore open start/stops
+
+    /*
     if(this.rangeStart == null && this.rangeEnd == null) {
       return true;
     } else if (this.rangeStart == null) {
@@ -31,7 +39,10 @@ class RangeObject {
       } else {
         return false;
       }
-    } else if (this.rangeStart <= t && t <= this.rangeEnd) {
+    } else */
+    
+    // For now inclusive of end and not inclusive of start
+    if (this.rangeStart < t && t <= this.rangeEnd) {
       return true;
     } else {
       return false;

@@ -15,6 +15,7 @@ class RangeArray {
   
   /**
    * Gets RangeObject corresponding to the time t
+   * Assuming t is always larger than last time this function was called
    * @param {number} t - time
    * @return {RangeObject} - RangeObject corresponding to t
    */
@@ -23,7 +24,7 @@ class RangeArray {
       return null;
     }
     
-    // This should not be hit. If there is no current, the dataArray should be empty
+    // If there is no current, the dataArray should be empty or not yet sorted
     if (this.current == null) {
       return null;
     }
@@ -64,10 +65,13 @@ class RangeArray {
   Sort(){
     if (this.dataArray && this.dataArray.length > 0) {
       this.dataArray.sort(function(dataObject1, dataObject2){
-        let overLap = true;
+        let overLap = false;
       
         // detect any overlap
         // TODO: check for cleaner way to do this using the RangeObject.contains function
+
+        // For now removing all nulls
+        /*
         if (dataObject1.rangeStart == null && dataObject2.rangeStart == null) {
           console.log("dataObject1 and dataObject2 both have negative infinity lower bounds");
           overLap = true;
@@ -90,13 +94,29 @@ class RangeArray {
           && dataObject1.rangeEnd < dataObject2.rangeStart) {
           // dataObject1 is less than dataObject2
           overLap = false;
-        } else if (dataObject2.rangeStart < dataObject1.rangeStart
+        } else
+        
+        if (dataObject2.rangeStart < dataObject1.rangeStart
           && dataObject2.rangeEnd < dataObject1.rangeStart) {
           // dataObject2 is less than dataObject1
           overLap = false;
         } else {
           console.log("should never get here if above logic is correct");
           overLap = true;
+        }
+        */
+
+        if (dataObject1.rangeStart == dataObject2.rangeStart){
+          // I don't think this check is needed but just being careful
+          overLap = true;
+        } else if (dataObject2.Contains(dataObject1.rangeEnd)) {
+          // overlap with dataObject1 being in front of dataObject2
+          // or dataObject2 containing dataObject1
+          overlap = false;
+        } else if (dataObject1.Contains(dataObject2.rangeEnd)) {
+          // overlap with dataObject2 being in front of dataObject1
+          // or dataObject1 containing dataObject2
+          overlap = false;
         }
       
         if (overLap){

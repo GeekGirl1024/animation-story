@@ -24,14 +24,16 @@ class AnimationMovements {
    * @param {number} deltaT - total time since the last call of this action
    */ 
   static HappyBounce2(absoluteT, deltaT, movementMeta) {
-    if (!movementMeta.startY) {
+    if (movementMeta.startY == null) {
       movementMeta.startY = this.position.y;
+      movementMeta.startX = this.position.x;
     }
     let bounceTimeDelta = absoluteT % movementMeta.bouncePeriod;
     let height = movementMeta.acceleration * bounceTimeDelta * (bounceTimeDelta - movementMeta.bouncePeriod);
+
     this.position.y = movementMeta.startY + height;
     if (movementMeta.xSpeed) {
-      this.position.x += deltaT * movementMeta.xSpeed;
+      this.position.x = movementMeta.startX + absoluteT * movementMeta.xSpeed;
     }
     //console.log(deltaT);
   }
@@ -72,6 +74,22 @@ class AnimationMovements {
 
   static HorizontalMove(absoluteT, deltaT, movementMeta) {
     this.position.x += deltaT * movementMeta.speed;
+        //console.log(deltaT);
+  }
+  /**
+   * Animatoin Movement function for Basic Movement
+   * @param {AnimationObject} animationObject - The Animation Object
+   * @param {number} absoluteT - total time since the start of this action
+   * @param {number} deltaT - total time since the last call of this action
+   */
+  static BasicMove(absoluteT, deltaT, movementMeta) {
+    if (movementMeta.xSpeed) {
+      this.position.x += deltaT * movementMeta.xSpeed;
+    }
+    if (movementMeta.ySpeed) {
+      this.position.y += deltaT * movementMeta.ySpeed;
+    }
+    
         //console.log(deltaT);
   }
   
