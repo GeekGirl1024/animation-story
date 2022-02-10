@@ -17,7 +17,7 @@ class Animation extends React.Component {
     
     // these are just temp values
     this.width = 300;
-    this.height = 500;
+    this.height = 300;
     this.backgroundColor = "#555555";
     this.timer = new Timer();
     
