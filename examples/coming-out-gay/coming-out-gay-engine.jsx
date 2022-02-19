@@ -39,6 +39,36 @@ const startingConditions = {
         angle: 2 * Math.PI * 3./5,
         boy: {},
         girl: {}
+      },
+      {
+        center: { x: -80, y: -130},
+        angle: 2 * Math.PI * 3./5,
+        boy: {},
+        girl: {}
+      },
+      {
+        center: { x: 60, y: -100},
+        angle: 2 * Math.PI * 4./5,
+        boy: {},
+        girl: {}
+      },
+      {
+        center: { x: -10, y: 130},
+        angle: 2 * Math.PI * 1./5,
+        boy: {},
+        girl: {}
+      },
+      {
+        center: { x: -20, y: 110},
+        angle: 2 * Math.PI * 1./3,
+        boy: {},
+        girl: {}
+      },
+      {
+        center: { x: 120, y: -110},
+        angle: 2 * Math.PI * 13./16,
+        boy: {},
+        girl: {}
       }
     ]
   };
@@ -66,12 +96,16 @@ class ComingOutGayEngine extends Engine {
         startingConditions.boyColor,
         "#000000");
 
+      boy.label = "Boy " + i;
+
       let girl = new Dot(
         pair.center.x + 10 * Math.cos(pair.angle + Math.PI),
         pair.center.y + 10 * Math.sin(pair.angle + Math.PI),
         4,
         startingConditions.girlColor,
         "#000000");
+      
+      girl.label = "Girl " + i;
 
       let dotPair = { boy:boy, girl:girl}
       this.boyGirlPairs.push(dotPair);

@@ -18,6 +18,7 @@ class AnimationObject {
     this.position = point(x,y);
     this.fillStyle = fillStyle;
     this.strokeStyle = strokeStyle;
+    this.label = "";
 
     // updates contains a RangeArray full of update functions
     this.updates = new RangeArray();

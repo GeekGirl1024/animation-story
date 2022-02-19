@@ -37,6 +37,11 @@ class Dot extends AnimationObject {
     ctx.arc(this.position.x, -this.position.y, this.radius, 0, Math.PI * 2, true);
     ctx.fill();
     ctx.stroke();
+    if (this.label) {
+      ctx.fillStyle = "black";
+      ctx.textAlign = "left";
+      ctx.fillText(this.label, this.position.x + 10, -this.position.y - 10); 
+    }
     ctx.restore();
   }
 }
