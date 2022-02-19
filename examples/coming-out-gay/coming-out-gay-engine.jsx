@@ -84,18 +84,42 @@ class ComingOutGayEngine extends Engine {
     
     this.boyGirlPairs = [];
     
-    let dotCircleDeltaRadians = (2*Math.PI) / 1500.;
+    
     this.boyColor = startingConditions.boyColor;
+    this.startingConditions = startingConditions;
+
+    let dancingSpinTime = 11000;
     this.timeStamp = 0;
 
-    for(let i = 0; i < startingConditions.pairs.length; i++){
-      let pair = startingConditions.pairs[i];
+    this.CreateBackGroundDancingStraightPeople(dancingSpinTime);
+
+    this.GayBoyEntersAndLooksAround();
+
+    this.timeStamp = dancingSpinTime;
+
+    this.BackGroundCharactersBounce();
+    
+
+
+    
+
+
+    for (let i = 0; i < this.animationObjects.length; i++) {
+      this.animationObjects[i].SortUpdates();
+    }
+  }
+
+  CreateBackGroundDancingStraightPeople(dancingTime) {
+    let dotCircleDeltaRadians = (2*Math.PI) / 1500.;
+
+    for(let i = 0; i < this.startingConditions.pairs.length; i++){
+      let pair = this.startingConditions.pairs[i];
       
       let boy = new Dot(
         pair.center.x + 10 * Math.cos(pair.angle),
         pair.center.y + 10 * Math.sin(pair.angle),
         4,
-        startingConditions.boyColor,
+        this.startingConditions.boyColor,
         "#000000");
 
       boy.label = "Boy " + i;
@@ -114,7 +138,7 @@ class ComingOutGayEngine extends Engine {
       this.animationObjects.push(boy);
       this.animationObjects.push(girl);
 
-      boy.AddUpdateFunction(new MovementObject(0, 100000, null, null, 
+      boy.AddUpdateFunction(new MovementObject(0, dancingTime, null, null, 
         AnimationMovements.Spiral.bind(boy),
           {
             deltaRadians: dotCircleDeltaRadians,
@@ -125,7 +149,7 @@ class ComingOutGayEngine extends Engine {
         )
       );
 
-      girl.AddUpdateFunction(new MovementObject(0, 100000, null, null, 
+      girl.AddUpdateFunction(new MovementObject(0, dancingTime, null, null, 
           AnimationMovements.Spiral.bind(girl),
           {
             deltaRadians: dotCircleDeltaRadians,
@@ -137,16 +161,6 @@ class ComingOutGayEngine extends Engine {
       );
     }
 
-    this.GayBoyEntersAndLooksAround();
-    
-
-
-    
-
-
-    for (let i = 0; i < this.animationObjects.length; i++) {
-      this.animationObjects[i].SortUpdates();
-    }
   }
 
   GayBoyEntersAndLooksAround() {
@@ -241,6 +255,38 @@ class ComingOutGayEngine extends Engine {
 
     this.timeStamp = timeStamp;
 
+  }
+
+  BackGroundCharactersBounce() {
+
+    // Bounce every 300 ticks up to 30 high while moving -0.03/tick x
+    let bouncePeriod = 300.0;
+    let mid = (bouncePeriod)/2.0;
+    let bounceHeight = 30.0;
+    let acceleration = -bounceHeight/(mid**2);
+
+    let timeStamp = this.timeStamp;
+
+    let bounceTime = 9000;
+    for (let i = 0; i < this.boyGirlPairs.length; i++) {
+      let boy = this.boyGirlPairs[i].boy;
+      let girl = this.boyGirlPairs[i].girl;
+      
+      boy.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + bounceTime, null, null, 
+        AnimationMovements.HappyBounce2.bind(boy),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration, xSpeed: 0 }
+      ));
+
+      girl.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + bounceTime, null, null, 
+        AnimationMovements.HappyBounce2.bind(girl),
+        { bouncePeriod: bouncePeriod, acceleration: acceleration, xSpeed: 0 }
+      ));
+
+    }
+
+    timeStamp += bounceTime;
+    this.timeStamp = timeStamp;
+    
   }
 }
 
