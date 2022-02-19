@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import TwoHappyDotsAnimation from './two-happy-dots/two-happy-dots-animation.jsx'
+import TwoHappyDotsAnimation from './two-happy-dots/two-happy-dots-animation.jsx';
+import ComingOutGayAnimation from './coming-out-gay/coming-out-gay-animation.jsx';
 
 const AnimationExamples = {
     DEFAULT: "Default",
-    TWOHAPPYDOTS: "Two Happy Dots"
+    TWOHAPPYDOTS: "Two Happy Dots",
+    COMINGOUTGAY: "Coming Out Gay"
 }
 
 class Examples extends React.Component {
@@ -19,6 +21,11 @@ class Examples extends React.Component {
         return <>
           <div>Two Happy Dots</div>
           <TwoHappyDotsAnimation />
+        </>
+      case AnimationExamples.COMINGOUTGAY:
+        return <>
+          <div>Coming Out Gay</div>
+          <ComingOutGayAnimation />
         </>
       case AnimationExamples.DEFAULT:
         return <div>Please Choose an Example</div>
@@ -35,6 +42,9 @@ class Examples extends React.Component {
           </button>
           <button type="button" onClick={() => {this.setState({ currentAnimation: AnimationExamples.TWOHAPPYDOTS })}}>
             Two Happy Dots
+          </button>
+          <button type="button" onClick={() => {this.setState({ currentAnimation: AnimationExamples.COMINGOUTGAY })}}>
+            Coming Out Gay
           </button>
         </div>
         {
