@@ -94,23 +94,29 @@ class AnimationMovements {
   }
 
   static Spiral(absoluteT, deltaT, movementMeta){
+
+
+    if (movementMeta.centerX == null) {
+      movementMeta.centerX = 0;
+    }
+
+    if (movementMeta.centerY == null) {
+      movementMeta.centerY = 0;
+    }
+
+    let sideX = this.position.x - movementMeta.centerX;
+    let sideY = this.position.y - movementMeta.centerY;
     if (movementMeta.radius == null) {
-      movementMeta.radius = Math.sqrt(this.position.y**2 + this.position.x**2);
+      movementMeta.radius = Math.sqrt(sideY**2 + sideX**2);
 
     }
     
     if (movementMeta.radians == null) {
-      movementMeta.radians = Math.atan(this.position.y/this.position.x);
+      movementMeta.radians = Math.atan((this.position.y - movementMeta.centerY)/(this.position.x - movementMeta.centerX));
 
-      if (this.position.x < 0) {
+      if (this.position.x - movementMeta.centerX < 0) {
         movementMeta.radians += Math.PI;
       }
-
-
-      /*
-      console.log(this.position.y/this.position.x);
-      console.log(Math.atan(this.position.y/this.position.x));
-      */
     }
   
     if (movementMeta.deltaRadians == null) {
@@ -121,31 +127,13 @@ class AnimationMovements {
       movementMeta.deltaRadius = 0;
     }
 
-/*
-    console.log("delta T " + deltaT);
-    console.log("delta Radians : " + movementMeta.deltaRadians);
-    console.log("delta Radius : " + movementMeta.deltaRadius);
-  */
+    
+
     movementMeta.radians += deltaT * movementMeta.deltaRadians;
     movementMeta.radius += deltaT * movementMeta.deltaRadius;
-/*
-    console.log("radius");
-    console.log(movementMeta.radius);
-    console.log("radians");
-    console.log(movementMeta.radians);
-    console.log("delta radius");
-    console.log(movementMeta.deltaRadius);
-    console.log("delta radians");
-    console.log(movementMeta.deltaRadians);
 
-    exit;
-*/
-    this.position.x = movementMeta.radius * Math.cos(movementMeta.radians);
-    this.position.y = movementMeta.radius * Math.sin(movementMeta.radians);
-
-
-
-
+    this.position.x = movementMeta.radius * Math.cos(movementMeta.radians) + movementMeta.centerX;
+    this.position.y = movementMeta.radius * Math.sin(movementMeta.radians) + movementMeta.centerY;
 
   }
   

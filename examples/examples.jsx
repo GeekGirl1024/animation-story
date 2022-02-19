@@ -12,7 +12,7 @@ const AnimationExamples = {
 class Examples extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentAnimation: AnimationExamples.DEFAULT };
+    this.state = { currentAnimation: AnimationExamples.COMINGOUTGAY };
   }
 
   RenderExample() {

@@ -2,8 +2,40 @@ import Engine from '/libraries/animation-objects/engine.jsx';
 import AnimationMovements from '/libraries/animation-movements/animation-movemets.jsx';
 import MovementObject from '/libraries/animation-objects/movement-objects/movement-object.jsx';
 import Dot from '/libraries/animation-objects/dot.jsx';
-import Rectangle from '/libraries/animation-objects/rectangle.jsx';
 import { vector, point } from '@js-basics/vector';
+
+
+
+const startingConditions = {
+    boyColor: "#BBBBFF",
+    girlColor: "#FFBBBB",
+    pairs:[
+      {
+        boy: { x: 10, y: 10 },
+        girl: { x: 20, y: 20}
+      },
+      {
+        boy: { x: 40, y: 0 },
+        girl: { x: 50, y: 10}
+      },
+      {
+        boy: { x: 0, y: 40 },
+        girl: { x: 10, y: 50}
+      },
+      {
+        boy: { x: 75, y: 30 },
+        girl: { x: 85, y: 40}
+      },
+      {
+        boy: { x: -40, y: 0 },
+        girl: { x: -30 , y: 10}
+      },
+      {
+        boy: { x: -80, y: 30 },
+        girl: { x: -70 , y: 40}
+      }
+    ]
+  };
 
 /** Class representing the ComingOutGayEngine. */
 class ComingOutGayEngine extends Engine {
@@ -12,108 +44,53 @@ class ComingOutGayEngine extends Engine {
    * Initializes the objects in the engine
    */
   Init() {
-    // Create main Dot 1
-    this.mainDot1 = new Dot(100, 0, 4, "#FF00FF", "#000000");
-    this.animationObjects.push(this.mainDot1);
+    // Create boy-girl dot pairs
+    
+    this.boyGirlPairs = [];
+    
+    let dotCircleDeltaRadians = (2*Math.PI) / 3000.;
 
-    // Create main Dot 2
-    this.mainDot2 = new Dot(-100, 0, 4, "#FFFF00", "#000000");
-    this.animationObjects.push(this.mainDot2);
+    for(let i = 0; i < startingConditions.pairs.length; i++){
+      let pair = startingConditions.pairs[i];
+      let boy = new Dot(pair.boy.x, pair.boy.y, 4, startingConditions.boyColor, "#000000");
+      let girl = new Dot(pair.girl.x, pair.girl.y, 4, startingConditions.girlColor, "#000000");
+      let dotPair = { boy:boy, girl:girl}
+      this.boyGirlPairs.push(dotPair);
+      this.animationObjects.push(boy);
+      this.animationObjects.push(girl);
 
-    // Time + 3000
-    // Dot 1 happy bounce move to middle
-    // Dot 2 move to middle
-    // 2 dots meeting with dot 1 being happy
+      boy.AddUpdateFunction(new MovementObject(0, 10000, null, null, 
+        AnimationMovements.Spiral.bind(boy),
+          {
+            deltaRadians: dotCircleDeltaRadians,
+            deltaRadius: 0,
+            centerX: boy.position.x + 5,
+            centerY:boy.position.y + 5
+          }
+        )
+      );
+
+      girl.AddUpdateFunction(new MovementObject(0, 10000, null, null, 
+          AnimationMovements.Spiral.bind(girl),
+          {
+            deltaRadians: dotCircleDeltaRadians,
+            deltaRadius: 0,
+            centerX: boy.position.x + 5,
+            centerY:boy.position.y + 5
+          }
+        )
+      );
+    }
 
 
 
     this.timeStamp = 0;
 
-    this.Main2DotsMeet();
 
     for (let i = 0; i < this.animationObjects.length; i++) {
       this.animationObjects[i].SortUpdates();
     }
   }
-
-  Main2DotsMeet() {
-    let timeStamp = this.timeStamp;
-        // timeStamp + 2400
-    // dot 1 bounce 7 times moving left
-    // dot 2 move left 3000
-
-        // Bounce every 300 ticks up to 30 high while moving -0.03/tick x
-    let bouncePeriod = 300.0;
-    let mid = (bouncePeriod)/2.0;
-    let bounceHeight = 30.0;
-    let acceleration = -bounceHeight/(mid**2);
-
-    this.mainDot1.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + 2100, null, null, 
-        AnimationMovements.HappyBounce2.bind(this.mainDot1),
-        { bouncePeriod: bouncePeriod, acceleration: acceleration, xSpeed: -0.03 }
-      )
-    );
-
-    // dot 1 2/3 height jump 1 time
-
-    this.mainDot1.AddUpdateFunction(new MovementObject(timeStamp + 2100, timeStamp + 2100 + 300, null, null, 
-        AnimationMovements.HappyBounce2.bind(this.mainDot1),
-        { bouncePeriod: bouncePeriod, acceleration: acceleration * 2.0/3.0, xSpeed: -0.03 }
-      )
-    );
-
-    // dot 1 1/3 height jump 1 time
-    this.mainDot1.AddUpdateFunction(new MovementObject(timeStamp + 2400, timeStamp + 2400 + 300, null, null, 
-        AnimationMovements.HappyBounce2.bind(this.mainDot1),
-        { bouncePeriod: bouncePeriod, acceleration: acceleration / 3.0, xSpeed: -0.03 }
-      )
-    );
-
-    // dot 1 move left
-    this.mainDot1.AddUpdateFunction(new MovementObject(timeStamp + 2700, timeStamp + 2700 + 300, null, null, 
-        AnimationMovements.BasicMove.bind(this.mainDot1),
-        { xSpeed: -0.03 }
-      )
-    );
-
-    // dot 2 move right 3000 ms
-    this.mainDot2.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + 3000, null, null, 
-        AnimationMovements.BasicMove.bind(this.mainDot2),
-        { xSpeed: 0.03 }
-      )
-    );
-
-    timeStamp += 3000;
-
-    this.timeStamp = timeStamp;
-  }
-
-  static DotBouncesAndSlowsDown(dot, startTime, totalBounceTime, slowDownTime, bouncePeriod, acceleration) {
-
-      
-      dot.AddUpdateFunction(new MovementObject(startTime, startTime + totalBounceTime - slowDownTime , null, null, 
-          AnimationMovements.HappyBounce2.bind(dot),
-          { bouncePeriod: bouncePeriod, acceleration: acceleration }
-        )
-      );
-
-
-      dot.AddUpdateFunction(new MovementObject(startTime + totalBounceTime - slowDownTime, startTime + totalBounceTime - slowDownTime/2., null, null, 
-          AnimationMovements.HappyBounce2.bind(dot),
-          { bouncePeriod: bouncePeriod, acceleration: acceleration * 2.0/3.0 }
-        )
-      );
-
-      // dot 1 1/3 height jump 1 time
-      dot.AddUpdateFunction(new MovementObject(startTime + totalBounceTime - slowDownTime/2.0, startTime + totalBounceTime, null, null, 
-          AnimationMovements.HappyBounce2.bind(dot),
-          { bouncePeriod: bouncePeriod, acceleration: acceleration / 3.0 }
-        )
-      );
-    }
-
-
-
 }
 
 export default ComingOutGayEngine;
