@@ -1,12 +1,12 @@
-import Engine from '../libraries/animation-objects/engine.jsx';
-import AnimationMovements from '../libraries/animation-movements/animation-movemets.jsx';
-import MovementObject from '../libraries/animation-objects/movement-objects/movement-object.jsx';
-import Dot from '../libraries/animation-objects/dot.jsx';
-import Rectangle from '../libraries/animation-objects/rectangle.jsx';
+import Engine from '/libraries/animation-objects/engine.jsx';
+import AnimationMovements from '/libraries/animation-movements/animation-movemets.jsx';
+import MovementObject from '/libraries/animation-objects/movement-objects/movement-object.jsx';
+import Dot from '/libraries/animation-objects/dot.jsx';
+import Rectangle from '/libraries/animation-objects/rectangle.jsx';
 import { vector, point } from '@js-basics/vector';
 
-/** Class representing the MyEngine. */
-class MyEngine extends Engine {
+/** Class representing the TwoHappyDotsEngine. */
+class TwoHappyDotsEngine extends Engine {
   
   /**
    * Initializes the objects in the engine
@@ -46,18 +46,6 @@ class MyEngine extends Engine {
     for (let i = 0; i < this.animationObjects.length; i++) {
       this.animationObjects[i].SortUpdates();
     }
-    
-    
-
-    /*
-    this.CreateDot1();
-    this.CreateDot2();
-    this.CreateDot3();
-    this.CreateRectangle1();
-
-    this.CreateBounceLine();
-    */
-    
   }
 
   Main2DotsMeet() {
@@ -160,7 +148,7 @@ class MyEngine extends Engine {
     // Dot 1 finishes happy bounce.
     // Both Dots pause 300ms
 
-    MyEngine.DotBouncesAndSlowsDown(this.mainDot1, timeStamp, 1500, 600, bouncePeriod, acceleration);
+    TwoHappyDotsEngine.DotBouncesAndSlowsDown(this.mainDot1, timeStamp, 1500, 600, bouncePeriod, acceleration);
 
     timeStamp += 1500;
     // wait 500 ms
@@ -171,7 +159,7 @@ class MyEngine extends Engine {
     // Dot 1 pause
     // Dot 2 tries happy bounce and afterwards pauses while looking at dot 1
     
-    MyEngine.DotBouncesAndSlowsDown(this.mainDot2, timeStamp, 1500, 600, bouncePeriod, acceleration);
+    TwoHappyDotsEngine.DotBouncesAndSlowsDown(this.mainDot2, timeStamp, 1500, 600, bouncePeriod, acceleration);
     
     timeStamp += 1500;
 
@@ -331,9 +319,9 @@ class MyEngine extends Engine {
     let bounceHeight = 30.0;
     let acceleration = -bounceHeight/(mid**2);
 
-    MyEngine.DotBouncesAndSlowsDown(this.mainDot2, timeStamp + dotCircleRotationTime, 2100, 600, bouncePeriod, acceleration);
+    TwoHappyDotsEngine.DotBouncesAndSlowsDown(this.mainDot2, timeStamp + dotCircleRotationTime, 2100, 600, bouncePeriod, acceleration);
 
-    MyEngine.DotBouncesAndSlowsDown(this.mainDot1, timeStamp + dotCircleRotationTime, 2100, 600, bouncePeriod, acceleration);
+    TwoHappyDotsEngine.DotBouncesAndSlowsDown(this.mainDot1, timeStamp + dotCircleRotationTime, 2100, 600, bouncePeriod, acceleration);
 
     timeStamp += dotCircleRotationTime + dotCircleRotationTime/2;
 
@@ -433,4 +421,4 @@ class MyEngine extends Engine {
 
 }
 
-export default MyEngine; 
+export default TwoHappyDotsEngine;
