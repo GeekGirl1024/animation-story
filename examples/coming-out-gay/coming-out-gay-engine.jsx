@@ -85,6 +85,8 @@ class ComingOutGayEngine extends Engine {
     this.boyGirlPairs = [];
     
     let dotCircleDeltaRadians = (2*Math.PI) / 1500.;
+    this.boyColor = startingConditions.boyColor;
+    this.timeStamp = 0;
 
     for(let i = 0; i < startingConditions.pairs.length; i++){
       let pair = startingConditions.pairs[i];
@@ -135,14 +137,110 @@ class ComingOutGayEngine extends Engine {
       );
     }
 
+    this.GayBoyEntersAndLooksAround();
+    
 
 
-    this.timeStamp = 0;
+    
 
 
     for (let i = 0; i < this.animationObjects.length; i++) {
       this.animationObjects[i].SortUpdates();
     }
+  }
+
+  GayBoyEntersAndLooksAround() {
+
+    let timeStamp = this.timeStamp;
+
+    let dotCircleDeltaRadians = (2*Math.PI) / 7500.;
+
+    this.gayBoy1 = new Dot(
+        -200,
+        -50,
+        4,
+        this.boyColor,
+        "#000000");
+
+    this.gayBoy1.label = "Gay Boy 1";
+
+    this.animationObjects.push(this.gayBoy1);
+
+    timeStamp += 1000;
+
+    let animationTime = 2000
+
+    let xSpeed = .05;
+
+    let xPosition = this.gayBoy1.position.x + animationTime * xSpeed;
+
+    // gay boy 1 enters
+    this.gayBoy1.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + animationTime, null, null, 
+        AnimationMovements.BasicMove.bind(this.gayBoy1),
+          {
+            xSpeed: .05
+          }
+        )
+      );
+
+    timeStamp += animationTime;
+
+    timeStamp += 500; // rest time
+
+    // gay boy check left
+    animationTime = 1000;
+    this.gayBoy1.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + animationTime, + null, null, 
+      AnimationMovements.Spiral.bind(this.gayBoy1),
+        {
+          deltaRadians: dotCircleDeltaRadians,
+          deltaRadius: 0,
+          centerX: xPosition - 25,
+          centerY: this.gayBoy1.position.y
+        }
+      )
+    );
+
+    timeStamp += animationTime;
+
+    timeStamp += 500; // Rest Period
+
+    // gay boy 1 checks right
+    animationTime = 2000;
+
+    this.gayBoy1.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + animationTime, null, null, 
+      AnimationMovements.Spiral.bind(this.gayBoy1),
+        {
+          deltaRadians: - dotCircleDeltaRadians,
+          deltaRadius: 0,
+          centerX: xPosition - 25,
+          centerY: this.gayBoy1.position.y
+        }
+      )
+    );
+
+    timeStamp += animationTime;
+
+    timeStamp += 500; // rest time
+
+    // gayboy 1 comes back to original spot
+    animationTime = 1000;
+
+    this.gayBoy1.AddUpdateFunction(new MovementObject(timeStamp, timeStamp + animationTime, null, null, 
+      AnimationMovements.Spiral.bind(this.gayBoy1),
+        {
+          deltaRadians: dotCircleDeltaRadians,
+          deltaRadius: 0,
+          centerX: xPosition - 25,
+          centerY: this.gayBoy1.position.y
+        }
+      )
+    );
+
+    timeStamp += animationTime;
+    timeStamp += 500;
+
+    this.timeStamp = timeStamp;
+
   }
 }
 
