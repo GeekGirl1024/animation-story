@@ -40,8 +40,35 @@ class Engine {
    * @param {any} ctx - the canvas
    */
   Draw(ctx) {
+    this.DrawGuideLines(ctx);
     for(let i = 0; i < this.animationObjects.length; i++) {
       this.animationObjects[i].Draw(ctx, this.center.x, this.center.y);
+    }
+  }
+
+  DrawGuideLines(ctx){
+    let widthDelta = this.width / 20.;
+    let heightDelta = this.height / 20.
+    for (let i = 0; i < 20; i++) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = 0.05;
+      ctx.strokeStyle = "#333333";
+      ctx.moveTo(widthDelta * i, 0);
+      ctx.lineTo(widthDelta * i, this.height);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    for (let i = 0; i < 20; i++) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = 0.05;
+      ctx.strokeStyle = "#333333";
+      ctx.moveTo(0,heightDelta * i);
+      ctx.lineTo(this.width, heightDelta * i);
+      ctx.stroke();
+      ctx.restore();
     }
   }
 }
