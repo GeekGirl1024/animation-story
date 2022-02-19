@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './app.css';
-import TwoHappyDotsAnimation from './examples/two-happy-dots/two-happy-dots-animation.jsx'
+import Examples from './examples/examples.jsx'
 import ErrorBoundary from './components/error-boundary/error-boundary.jsx';
 
 class App extends React.Component {
@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <ErrorBoundary FallbackComponent={OurFallbackComponent}>
-          <TwoHappyDotsAnimation />
+          <Examples />
         </ErrorBoundary>
       </div>  
     )
