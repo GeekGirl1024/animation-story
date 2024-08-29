@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client'
 import './app.css';
 import Examples from './examples/examples.jsx'
 import ErrorBoundary from './components/error-boundary/error-boundary.jsx';
@@ -25,6 +26,7 @@ const OurFallbackComponent = ({ error, componentStack, resetErrorBoundary }) => 
   );
 };
 
-
-ReactDOM.render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(<App />)
 
